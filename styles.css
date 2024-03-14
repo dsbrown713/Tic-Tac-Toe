@@ -3,10 +3,27 @@
     text-align: center;
 }
 
+#names {
+    clear: both;
+    margin: 0 auto;
+    width: 302px;
+}
+
+#name1 {
+    float: left;
+}
+
+#name2 {
+    float: right;
+}
+
 .row > div {
     float: left;
     height: 100px;
     width: 100px;
+    cursor: pointer;
+    line-height: 100px;
+    font-size: 75px;
 }
 
 .row > div:hover {
