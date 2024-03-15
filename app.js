@@ -1,11 +1,27 @@
 // Initialize some variables
+const winningConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+];
 let current_player = "X"
 let turn_count = 0
 let game_won = false
 let winning_player = ""
 
-function cellClicked() {
+function cellClicked(event) {
     if (game_won) {
+        temp_name = name1
+        name1 = name2
+        name2 = temp_name
+        document.getElementById("name1").textContent = `${name1}: X`
+        document.getElementById("name2").textContent = `${name2}: O`
+        document.getElementById("results").textContent = `${name1}'s turn`
         current_player = "X"
         turn_count = 0
         game_won = false
@@ -13,75 +29,49 @@ function cellClicked() {
         for (let cell of cells) {
             cell.textContent = ""
         }
-    } else {
-        if (event.target.textContent == "") {
-            event.target.textContent = current_player
-            turn_count++
-            [game_won, winning_player] = isGameWon()
-            if (game_won) {
-                if (winning_player == "X") {
-                    window.alert(`Congratulations ${name1}, you won the game!\nTime to switch sides.`)
-                } else {
-                    window.alert(`Congratulations ${name2}, you won the game!\nTime to switch sides.`)
-                }
-                temp_name = name1
-                name1 = name2
-                name2 = temp_name
-                document.getElementById("name1").textContent = `${name1}: X`
-                document.getElementById("name2").textContent = `${name2}: O`
-            } else if (turn_count == 9) {
-                console.log("Draw")
-                window.alert("The game has ended in a draw.")
-                game_won = true
-            } else {
-                if (current_player == "X") {
-                    current_player = "O"
-                } else {
-                    current_player = "X"
-                }
-            }
+    } else if (event.target.textContent == "") {
+        if (current_player == "X") {
+            document.getElementById("results").textContent = `${name2}'s turn`
         } else {
-            console.log(`This box already has an ${event.target.textContent} and cannot be replaced.`)
+            document.getElementById("results").textContent = `${name1}'s turn`
         }
+        event.target.textContent = current_player
+        turn_count++
+        game_won = isGameWon()
+        if (game_won) {
+            if (current_player == "X") {
+                document.getElementById("results").textContent = `Congratulations ${name1}, you won!`
+            } else {
+                document.getElementById("results").textContent = `Congratulations ${name2}, you won!`
+            }
+        } else if (turn_count == 9) {
+            console.log("Draw")
+            document.getElementById("results").textContent = `Draw!`
+            game_won = true
+        } else {
+            if (current_player == "X") {
+                current_player = "O"
+            } else {
+                current_player = "X"
+            }
+        }
+    } else {
+        console.log(`This box already has an ${event.target.textContent} and cannot be replaced.`)
     }
 }
 
 function isGameWon() {
-    // Top row
-    if (cells[0].textContent !== "" && cells[1].textContent !== "" && cells[2].textContent !== "" &&
-        cells[0].textContent === cells[1].textContent && cells[1].textContent === cells[2].textContent) {
-        return [true, cells[0].textContent]
-    // Center row
-    } else if (cells[3].textContent !== "" && cells[4].textContent !== "" && cells[5].textContent !== "" &&
-        cells[3].textContent === cells[4].textContent && cells[4].textContent === cells[5].textContent) {
-        return [true, cells[3].textContent]
-    // Bottom row
-    } else if (cells[6].textContent !== "" && cells[7].textContent !== "" && cells[8].textContent !== "" &&
-        cells[6].textContent === cells[7].textContent && cells[7].textContent === cells[8].textContent) {
-        return [true, cells[6].textContent]
-    // Left row
-    } else if (cells[0].textContent !== "" && cells[3].textContent !== "" && cells[6].textContent !== "" &&
-        cells[0].textContent === cells[3].textContent && cells[3].textContent === cells[6].textContent) {
-        return [true, cells[0].textContent]
-    // Middle row
-    } else if (cells[1].textContent !== "" && cells[4].textContent !== "" && cells[7].textContent !== "" &&
-        cells[1].textContent === cells[4].textContent && cells[4].textContent === cells[7].textContent) {
-        return [true, cells[1].textContent]
-    // Right row
-    } else if (cells[2].textContent !== "" && cells[5].textContent !== "" && cells[8].textContent !== "" &&
-        cells[2].textContent === cells[5].textContent && cells[5].textContent === cells[8].textContent) {
-        return [true, cells[2].textContent]
-    // Diagonal TL to BR
-    } else if (cells[0].textContent !== "" && cells[4].textContent !== "" && cells[8].textContent !== "" &&
-        cells[0].textContent === cells[4].textContent && cells[4].textContent === cells[8].textContent) {
-        return [true, cells[0].textContent]
-    // Diagonal BL to TR
-    } else if (cells[6].textContent !== "" && cells[4].textContent !== "" && cells[2].textContent !== "" &&
-        cells[6].textContent === cells[4].textContent && cells[4].textContent === cells[2].textContent) {
-        return [true, cells[6].textContent]
-    } else {
-        return [false, ""]
+    for (let i = 0; i <=7; i++) {
+        let win_con = winningConditions[i];
+        let a = cells[win_con[0]].textContent;
+        let b = cells[win_con[1]].textContent;
+        let c = cells[win_con[2]].textContent;
+        console.log(a + ", " + b + ", " + c)
+        if ((a !== "" || b !== "" || c !== "") && a === b && b === c) {
+            return true
+        }
     }
+    return false
 }
 
 // Allow players to choose their names
@@ -95,6 +85,7 @@ while (name2 == null) {
 }
 document.getElementById("name1").textContent = `${name1}: X`
 document.getElementById("name2").textContent = `${name2}: O`
+document.getElementById("results").textContent = `${name1}'s turn`
 
 let cells = document.querySelectorAll(".row > div");
 

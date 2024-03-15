@@ -17,6 +17,13 @@
     float: right;
 }
 
+#results {
+    text-align: center;
+    width: 302px;
+    margin: 0 auto;
+    clear: both;
+}
+
 .row > div {
     float: left;
     height: 100px;
