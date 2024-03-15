@@ -6,22 +6,26 @@
 #names {
     clear: both;
     margin: 0 auto;
-    width: 302px;
+    display: flex;
+    justify-content: center;
 }
 
 #name1 {
     float: left;
+    margin: 0 10px;
 }
 
 #name2 {
     float: right;
+    margin: 0 10px;
 }
 
 #results {
     text-align: center;
-    width: 302px;
     margin: 0 auto;
     clear: both;
+    display: flex;
+    justify-content: center;
 }
 
 .row > div {
